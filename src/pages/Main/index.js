@@ -7,8 +7,6 @@ import {
   Container, Title, Form, Input, Submit, List
 } from './styles';
 
-import { List } from 'realm';
-
 export default function Main() {
   return (
     <Container>
@@ -27,7 +25,15 @@ export default function Main() {
 
       <List
         keyboardShouldPersistTaps="handled"
-        data={[]}
+        data={[
+          {
+            id: 1,
+            name: "unform",
+            description: "Reflection based form generation for .Net. Contribute to gpriaulx/UniForm development by creating an account on GitHub.",
+            stars: 1234,
+            forks: 133
+          }
+        ]}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
           <Repository data={item} />
