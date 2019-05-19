@@ -1,7 +1,13 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import { Container, Title, Form, Input, Submit } from './styles';
+import Repository from '~/components/Repository';
+
+import {
+  Container, Title, Form, Input, Submit, List
+} from './styles';
+
+import { List } from 'realm';
 
 export default function Main() {
   return (
@@ -19,6 +25,14 @@ export default function Main() {
         </Submit>
       </Form>
 
+      <List
+        keyboardShouldPersistTaps="handled"
+        data={[]}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <Repository data={item} />
+        )}
+        />
     </Container>
   );
 }
