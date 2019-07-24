@@ -14,7 +14,6 @@ import {
 
 export default function Main() {
   const [input, setInput] = useState('');
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [repositories, setRepositories] = useState([]);
 
@@ -27,7 +26,7 @@ export default function Main() {
       setRepositories(data);
     }
     loadRepositories();
-  }, []);
+  }, [loading]);
 
   async function saveRepository(repository) {
     const data = {
@@ -42,9 +41,11 @@ export default function Main() {
     const realm = await getRealm();
 
     realm.write(() => {
-      realm.create('Repository', data);
+      realm.create('Repository', data, "modified");
     });
-  }
+
+    return data
+  };
 
   async function handleAddRepository() {
     try{
@@ -54,13 +55,19 @@ export default function Main() {
       await saveRepository(response.data);
       
       setInput('');
-      setError(false);
       Keyboard.dismiss();
     } catch (err) {
       console.tron.warn('Erro')
-      setError(true);
     }
     setLoading(false);
+  };
+
+  async function handleRefreshRepository(repository) {
+    const response = await api.get(`/repos/${repository.fullName}`);
+
+    const data = await saveRepository(response.data);
+
+    setRepositories(repositories.map(repo => repo.id === data.id ? data : repo))
   };
 
   return (
@@ -70,7 +77,6 @@ export default function Main() {
       <Form>
         <Input
           value={input}
-          error={error}
           onChangeText={setInput}
           autoCapitalize="none"
           autoCorrect={false}
@@ -88,7 +94,7 @@ export default function Main() {
         data={repositories}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
-          <Repository data={item} />
+          <Repository data={item} onRefresh={() => handleRefreshRepository(item)}/>
         )}
         />
     </Container>

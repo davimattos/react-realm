@@ -35,3 +35,16 @@ export const Stat = styled.View`
 export const StatCount = styled.Text`
   margin-left: 6px;
 `;
+
+export const Refresh = styled.TouchableOpacity`
+  margin-top: 15px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const RefreshText = styled.Text`
+  font-size: 14px;
+  font-weight: bold;
+  color: #7159c1;
+  margin-left: 6px;
+`;
