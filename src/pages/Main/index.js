@@ -32,7 +32,7 @@ export default function Main() {
     const data = {
       id: repository.id,
       name: repository.name,
-      fullname: repository.full_name,
+      fullName: repository.full_name,
       description: repository.description,
       stars: repository.stargazers_count,
       forks: repository.forks_count,
