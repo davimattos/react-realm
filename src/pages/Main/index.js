@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ActivityIndicator } from 'react-native';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import api from '~/services/api';
@@ -13,6 +15,7 @@ import {
 export default function Main() {
   const [input, setInput] = useState('');
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [repositories, setRepositories] = useState([]);
 
   useEffect(() => {
@@ -45,16 +48,19 @@ export default function Main() {
 
   async function handleAddRepository() {
     try{
+      setLoading(true);
       const response = await api.get(`/repos/${input}`);
 
       await saveRepository(response.data);
-
+      
       setInput('');
       setError(false);
       Keyboard.dismiss();
     } catch (err) {
+      console.tron.warn('Erro')
       setError(true);
     }
+    setLoading(false);
   };
 
   return (
@@ -71,7 +77,9 @@ export default function Main() {
           placeholder="Procurar repositório..."
         />
         <Submit onPress={handleAddRepository}>
-          <Icon name="add" size={22} color="#FFF" />
+          {loading 
+            ?  <ActivityIndicator size="large" color="#FFF" />
+            :  <Icon name="add" size={30} color="#FFF" />}
         </Submit>
       </Form>
 
